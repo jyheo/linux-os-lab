@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
+#include <sched.h>
 
 pthread_mutex_t mutex;
 
@@ -15,7 +16,7 @@ void *thread_entry(void *ptr)
         pthread_mutex_lock (&mutex); /* entercritical() */
 	for (j = 0; j < len; j++) {
 	    putchar(str[j]);
-	    usleep(1); /*to yield CPU*/
+	    sched_yield(); /*to yield CPU*/
 	}
         putchar('\n');
         pthread_mutex_unlock (&mutex); /* exitcritical() */

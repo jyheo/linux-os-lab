@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
+#include <sched.h>
 
 void *thread_entry(void *ptr)
 {
@@ -12,7 +13,7 @@ void *thread_entry(void *ptr)
     for (i = 0; i < 10; i++) {
 	for (j = 0; j < len; j++) {
 	    putchar(str[j]);
-	    usleep(1); /*to yield CPU*/
+	    sched_yield(); /*to yield CPU*/
 	}
         putchar('\n');
     }
