@@ -1,4 +1,4 @@
-obj-m += hs365.o
+obj-m += hs365.o procsview.o
 
 KDIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
