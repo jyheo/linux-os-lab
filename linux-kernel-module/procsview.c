@@ -1,25 +1,30 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/sched.h>
+#include <linux/sched/signal.h>
 
-static int __init procsview_init(void)
+/* tested in kernel 4.19 */
+
+static int __init init_procsview(void)
 {
-  /* Set up the anchor point */
-  struct task_struct *task = &init_task;
+  struct task_struct *p;
 
-  /* Walk through the task list, until we hit the init_task again */
-  do {
+  for_each_process(p) { /* macro defined in linux/sched/signal.h */
     printk( KERN_INFO "*** %s [%d] parent %s\n",
-    task->comm, task->pid, task->parent->comm );
-  } while ( (task = next_task(task)) != &init_task );
+		p->comm, p->pid, p->parent->comm );
+  }
+
   return 0;
+
 }
 
-static void __exit procsview_exit(void)
+static void __exit exit_procsview(void)
 {
   return;
 }
 
-module_init(procsview_init);
-module_exit(procsview_exit);
+module_init(init_procsview);
+module_exit(exit_procsview);
+
+MODULE_LICENSE("GPL");
 
